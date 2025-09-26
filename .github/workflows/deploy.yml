@@ -1,7 +1,7 @@
 // Type definitions for stage state
 
 export interface InitState {
-    initialized: boolean;
+    initialized:ChubAI;
     data: Record<string, any>;
 }
 
