@@ -1,1 +1,69 @@
+{
+  "type": "object",
+  "title": "Time-Based Reality System Configuration",
+  "description": "Configure your stage settings",
+  "properties": {
+    "enabled": {
+      "type": "boolean",
+      "title": "Enable Stage",
+      "default": true
+    },
+    "updateFrequency": {
+      "type": "integer",
+      "title": "Update Frequency (ms)",
+      "description": "How often to update the display",
+      "minimum": 100,
+      "maximum": 5000,
+      "default": 1000
+    },
+    "displayMode": {
+      "type": "string",
+      "title": "Display Mode",
+      "enum": [
+        "compact",
+        "expanded",
+        "minimal"
+      ],
+      "default": "expanded"
+    }
+  },
+  "required": [
+    "enabled"
+  ]
+}
+.github/workflows/deploy.yml
+Copy
+name: Deploy to ChubAI
 
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '21.7.1'
+        
+    - name: Install dependencies
+      run: |
+        corepack enable
+        yarn install
+        
+    - name: Build stage
+      run: yarn build
+      
+    - name: Deploy to ChubAI
+      env:
+        CHUB_AUTH_TOKEN: ${{ secrets.CHUB_AUTH_TOKEN }}
+      run: |
+        # Deployment script will be added by ChubAI template
+        echo "Deploying to ChubAI..."
